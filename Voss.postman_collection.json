@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "597694fd-32df-4d44-93b7-2e26414d4b67",
+		"name": "Voss",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetAllUsers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Total Pages is 2,page 1 is Displayed and Total # of records is 12\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.total_pages).to.eql(2);\r",
+							"  pm.expect(responseJson.page).to.eql(1);\r",
+							"  pm.expect(responseJson.total).to.eql(12);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddNewRecord",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    //parse the response json and test three properties\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.id).to.have.lengthOf(3);\r",
+							"});\r",
+							"pm.test(\"Person is Siduduzo\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.first_name).to.eql(\"Siduduzo\");\r",
+							"  pm.expect(responseJson.last_name).to.eql(\"Manqele\");\r",
+							"    pm.expect(responseJson.email).to.eql(\"sidTest@voss.com\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sidTest@voss.com\",\r\n    \"first_name\": \"Siduduzo\",\r\n    \"last_name\": \"Manqele\",\r\n    \"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateExistingUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Person is my update test, last name sid and  email is sid test\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.first_name).to.eql(\"My Update test\");\r",
+							"  pm.expect(responseJson.last_name).to.eql(\"Sid\");\r",
+							"    pm.expect(responseJson.email).to.eql(\"sidTest\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sidTest\",\r\n    \"first_name\": \"My Update test\",\r\n    \"last_name\": \"Sid\",\r\n    \"avatar\": \"https://reqres.in/img/faces/1-image.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}/{{UserId}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}"
+					],
+					"path": [
+						"{{UserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "singleUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Expectyed single user details should match\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.data).to.eql({\"id\":6,\"email\":\"tracey.ramos@reqres.in\",\"first_name\":\"Tracey\",\"last_name\":\"Ramos\",\"avatar\":\"https://reqres.in/img/faces/6-image.jpg\"},\"support\",{\"url\":\"https://reqres.in/#support-heading\",\"text\":\"To keep ReqRes free, contributions towards server costs are appreciated!\"});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}/{{UserId}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}"
+					],
+					"path": [
+						"{{UserId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pages",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"page requested is 2\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"\r",
+							"  pm.expect(responseJson.page).to.eql(2);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}{{pages}}{{page}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}{{pages}}{{page}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RemoveUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Test is 204 no content\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}{{AllUsers}}/{{UserIdRemove}}",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}{{AllUsers}}"
+					],
+					"path": [
+						"{{UserIdRemove}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseUrl",
+			"value": "reqres.in/api/"
+		},
+		{
+			"key": "AllUsers",
+			"value": "users"
+		},
+		{
+			"key": "UserId",
+			"value": "6"
+		},
+		{
+			"key": "pages",
+			"value": "?page="
+		},
+		{
+			"key": "page",
+			"value": "2"
+		},
+		{
+			"key": "UserIdRemove",
+			"value": "5"
+		}
+	]
+}
